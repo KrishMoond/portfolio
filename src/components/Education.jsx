@@ -1,5 +1,6 @@
 import React from "react";
 import { FaGraduationCap, FaMedal } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export const Education = () => {
   const education = [
@@ -58,16 +59,23 @@ export const Education = () => {
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <h3 className="text-xl font-semibold mb-6 flex items-center text-gray-800 dark:text-white">
               <FaGraduationCap className="mr-2 text-blue-600 dark:text-blue-400" />
               Education
             </h3>
             <div className="space-y-8">
               {education.map((item, index) => (
-                <div
+                <motion.div
                   key={index}
                   className="relative pl-8 border-l-2 border-blue-600 dark:border-blue-400 pb-8 last:pb-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.3, duration: 0.6 }}
                 >
                   <div className="absolute -left-3 top-0 bg-blue-600 dark:bg-blue-400 rounded-full p-1 text-white">
                     {item.icon}
@@ -77,21 +85,28 @@ export const Education = () => {
                   <p className="text-gray-600 dark:text-gray-300">{item.institution}</p>
                   <p className="text-gray-500 dark:text-gray-400 text-sm">{item.location}</p>
                   <p className="mt-1 text-gray-700 dark:text-gray-300 font-medium">{item.grade}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             <h3 className="text-xl font-semibold mb-6 flex items-center text-gray-800 dark:text-white">
               <FaMedal className="mr-2 text-blue-600 dark:text-blue-400" />
               Certificates
             </h3>
             <div className="space-y-4">
               {certificates.map((cert, index) => (
-                <div
+                <motion.div
                   key={index}
                   className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: index * 0.3, duration: 0.6 }}
                 >
                   <h4 className="font-medium text-gray-800 dark:text-white">{cert.title}</h4>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
@@ -105,10 +120,10 @@ export const Education = () => {
                   >
                     View Certificate
                   </a>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
