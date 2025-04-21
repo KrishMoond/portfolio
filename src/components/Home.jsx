@@ -125,7 +125,7 @@ export const Home = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur-2xl opacity-60 group-hover:opacity-100"></div>
               <img
                 id="profile-img"
-                src="/src/assets/unigames.png"
+                src="/src/assets/bimoji.png"
                 alt="Krish Moond"
                 className="relative z-10 rounded-full w-64 h-64 object-cover shadow-2xl"
               />
