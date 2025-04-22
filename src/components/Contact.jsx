@@ -12,18 +12,7 @@ export const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeGlow, setActiveGlow] = useState(null);
-
-  // Handle mouse movement for glow effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -54,16 +43,77 @@ export const Contact = () => {
     }, 1500);
   };
 
-  // Background particles configuration
-  const particles = Array.from({ length: 20 }, (_, i) => i);
+  // Enhanced background particles configuration
+  const particles = Array.from({ length: 40 }, (_, i) => i); // Increased from 20 to 40
+  const starParticles = Array.from({ length: 60 }, (_, i) => i); // Additional star-like particles
 
   return (
-    <section id="contact" className="py-16 bg-gradient-to-br from-gray-900 to-gray-800 transition-colors relative overflow-hidden min-h-screen">
-      {/* Floating particles */}
+    <section id="contact" className="py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 transition-colors relative overflow-hidden min-h-screen">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-blue-600/10 animate-gradient-shift"></div>
+      </div>
+
+      {/* Nebula-like effect */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-purple-500/10 blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      />
+      
+      <motion.div
+        className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.1, 0.2, 0.1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      />
+
+      {/* Star-like particles */}
+      {starParticles.map((particle, index) => (
+        <motion.div
+          key={`star-${index}`}
+          className="absolute rounded-full bg-white"
+          initial={{
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            scale: Math.random() * 0.3 + 0.1,
+            opacity: Math.random() * 0.5 + 0.2,
+          }}
+          animate={{
+            opacity: [0.2, 0.8, 0.2],
+          }}
+          transition={{
+            duration: 2 + Math.random() * 3,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          style={{
+            width: `${Math.random() * 3 + 1}px`,
+            height: `${Math.random() * 3 + 1}px`,
+          }}
+        />
+      ))}
+
+      {/* Enhanced floating particles */}
       {particles.map((particle, index) => (
         <motion.div
           key={index}
-          className="absolute rounded-full bg-blue-500 opacity-20"
+          className={`absolute rounded-full ${
+            index % 3 === 0 ? "bg-blue-500" : index % 3 === 1 ? "bg-purple-500" : "bg-cyan-500"
+          } opacity-20`}
           initial={{
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
@@ -81,6 +131,7 @@ export const Contact = () => {
               Math.random() * window.innerHeight,
             ],
             opacity: [0.1, 0.3, 0.1],
+            scale: [1, 1.5, 1],
           }}
           transition={{
             duration: 15 + Math.random() * 20,
@@ -94,20 +145,30 @@ export const Contact = () => {
         />
       ))}
 
-      {/* Glowing orb that follows cursor */}
+      {/* Animated light beams */}
       <motion.div
-        className="fixed w-64 h-64 rounded-full bg-blue-500 opacity-10 pointer-events-none blur-3xl"
+        className="absolute -top-20 -left-20 w-40 h-80 bg-blue-500/5 rotate-45 blur-3xl"
         animate={{
-          x: mousePosition.x - 128,
-          y: mousePosition.y - 128,
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.15, 0.1],
+          x: [0, 100, 0],
+          opacity: [0.05, 0.1, 0.05],
         }}
         transition={{
-          x: { duration: 0.2, ease: "easeOut" },
-          y: { duration: 0.2, ease: "easeOut" },
-          scale: { duration: 3, repeat: Infinity },
-          opacity: { duration: 3, repeat: Infinity },
+          duration: 20,
+          repeat: Infinity,
+          repeatType: "reverse",
+        }}
+      />
+      
+      <motion.div
+        className="absolute -bottom-20 -right-20 w-40 h-80 bg-purple-500/5 -rotate-45 blur-3xl"
+        animate={{
+          x: [0, -100, 0],
+          opacity: [0.05, 0.1, 0.05],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          repeatType: "reverse",
         }}
       />
 
