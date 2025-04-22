@@ -294,11 +294,9 @@ export const Footer = () => {
             
             <div className="mt-6">
               <p className="text-sm text-gray-500">
-                Based in San Francisco, California
+                Based in Hisar, Haryana
               </p>
-              <p className="text-sm text-gray-500">
-                Available for remote work worldwide
-              </p>
+               
             </div>
           </motion.div>
         </div>
