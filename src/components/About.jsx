@@ -20,13 +20,16 @@ export const About = () => {
   const canvasRef = useRef(null);
   const [text, setText] = useState("");
   const [isTypingComplete, setIsTypingComplete] = useState(false);
-  const message = "Welcome to My Digital Universe! 🌌";
+  // const message = "Welcome to My Digital Universe! 🌌";
+
+  
 
   useEffect(() => {
+    const message = "Welcome to My Digital Universe! 🌌";
     let i = 0;
-    setText("");
+    setText(""); // Ensure text is reset at the beginning
     setIsTypingComplete(false);
-    
+
     const interval = setInterval(() => {
       if (i < message.length) {
         setText(prev => prev + message[i]);
