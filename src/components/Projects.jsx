@@ -390,7 +390,7 @@ export const Projects = () => {
                 className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 relative overflow-hidden inline-block"
               >
                 {/* Holographic scan line */}
-                <div className="absolute inset-0 hologram-scan"></div>
+                <div className="absolute inset-0 hologram-scan "></div>
                 <span className="relative z-10">View All Projects</span>
               </a>
             </div>
