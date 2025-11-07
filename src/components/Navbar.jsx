@@ -171,12 +171,12 @@ export const Navbar = ({ activeSection }) => {
   const location = useLocation();
 
   const navItems = [
-    { id: "home", label: "Home", path: "/", icon: "🏠" },
-    { id: "about", label: "About", path: "/about", icon: "👤" },
-    { id: "skills", label: "Skills", path: "/skills", icon: "🛠️" },
-    { id: "projects", label: "Projects", path: "/projects", icon: "📂" },
-    { id: "education", label: "Education", path: "/education", icon: "🎓" },
-    { id: "contact", label: "Contact", path: "/contact", icon: "📧" },
+    { id: "home", label: "Home", path: "/", icon: "🏠", glow: "hover:shadow-yellow-400" },
+    { id: "about", label: "About", path: "/about", icon: "👤", glow: "hover:shadow-blue-400" },
+    { id: "skills", label: "Skills", path: "/skills", icon: "🛠️", glow: "hover:shadow-green-400" },
+    { id: "projects", label: "Projects", path: "/projects", icon: "📂", glow: "hover:shadow-purple-400" },
+    { id: "education", label: "Education", path: "/education", icon: "🎓", glow: "hover:shadow-pink-400" },
+    { id: "contact", label: "Contact", path: "/contact", icon: "📧", glow: "hover:shadow-cyan-400" },
   ];
 
   useEffect(() => {
@@ -245,24 +245,23 @@ export const Navbar = ({ activeSection }) => {
       variants={navbarVariants}
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-gray-900/95 backdrop-blur-lg shadow-lg shadow-indigo-900/10" 
-          : "bg-gray-900/80 backdrop-blur-sm"
-      } text-gray-100`}
+          ? "glass-card shadow-lg" 
+          : "glass"
+      } text-white`}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link to="/" className="text-2xl font-bold flex items-center gap-2">
+          <Link to="/" className="text-2xl font-bold flex items-center gap-3">
             <motion.div
-              className="bg-gradient-to-r from-purple-500 to-blue-500 p-2 rounded-lg"
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-primary p-3 rounded-xl glass-button"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              <span className="text-white font-bold">K</span>
+              <span className="text-white font-black text-xl">K</span>
             </motion.div>
             <motion.span
-              className="bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-400 text-transparent bg-clip-text"
+              className="text-gradient font-bold"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
             >
               Krish's Portfolio
             </motion.span>
@@ -280,19 +279,13 @@ export const Navbar = ({ activeSection }) => {
               >
                 <Link
                   to={item.path}
-                  className={`relative flex items-center gap-2 px-4 py-2 rounded-lg mx-1 ${
+                  className={`relative flex items-center gap-2 px-4 py-3 rounded-xl mx-1 font-medium transition-all duration-300 ${
                     activeSection === item.id
-                      ? "text-indigo-300 font-medium" 
-                      : "text-gray-300 hover:text-indigo-300"
-                  } transition-colors duration-300`}
+                      ? "text-white glass-button" 
+                      : "text-gray-300 hover:text-white hover:glass"
+                  }`}
                 >
-                  {activeSection === item.id && (
-                    <motion.span
-                      className="absolute inset-0 bg-indigo-900/30 rounded-lg -z-10"
-                      layoutId="navHighlight"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
+
                   <motion.span 
                     variants={iconVariants}
                     initial="initial"
@@ -343,11 +336,11 @@ export const Navbar = ({ activeSection }) => {
                   <motion.div key={item.id} variants={mobileNavItemVariants}>
                     <Link
                       to={item.path}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+                      className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
                         activeSection === item.id
-                          ? "bg-indigo-900/30 text-indigo-300 font-medium" 
-                          : "text-gray-300 hover:bg-gray-700 hover:text-indigo-300"
-                      } transition-colors duration-300`}
+                          ? "glass-button text-white" 
+                          : "text-gray-300 hover:glass hover:text-white"
+                      }`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <span className="text-lg">{item.icon}</span>

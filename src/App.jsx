@@ -193,216 +193,74 @@
 
 // export default App;
 
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import { Navbar } from "./components/Navbar";
-import { Footer } from "./components/Footer";
+import React, { useState, lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { ThreeBackground } from "./components/ThreeBackground";
+import { FloatingDock } from "./components/FloatingDock";
+import { ScrollProgress } from "./components/ScrollProgress";
+import { CommandPalette } from "./components/CommandPalette";
+import { ModernFooter } from "./components/ModernFooter";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { CursorTrail } from "./components/CursorTrail";
+import { VisitorCounter } from "./components/VisitorCounter";
 
-// Lazy load components for better performance
-const Home = lazy(() => import("./components/Home").then(module => ({ default: module.Home })));
-const About = lazy(() => import("./components/About").then(module => ({ default: module.About })));
-const Skills = lazy(() => import("./components/Skills").then(module => ({ default: module.Skills })));
-const Projects = lazy(() => import("./components/Projects").then(module => ({ default: module.Projects })));
-const Education = lazy(() => import("./components/Education").then(module => ({ default: module.Education })));
-const Contact = lazy(() => import("./components/Contact").then(module => ({ default: module.Contact })));
+// Lazy load components
+const BentoHome = lazy(() => import("./components/BentoHome"));
+const TimelineAbout = lazy(() => import("./components/TimelineAbout"));
+const InteractiveSkills = lazy(() => import("./components/InteractiveSkills"));
+const ModernProjects = lazy(() => import("./components/ModernProjects"));
+const ModernEducation = lazy(() => import("./components/ModernEducation"));
+const ModernContact = lazy(() => import("./components/ModernContact"));
+const Blog = lazy(() => import("./components/Blog"));
+const AdminBlog = lazy(() => import("./components/AdminBlog"));
 
-// Loading component
+// Improved loading component
 const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="w-16 h-16 border-4 border-t-indigo-600 border-indigo-200 rounded-full animate-spin"></div>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="text-center">
+      <div className="w-16 h-16 border-4 border-t-purple-500 border-purple-200 rounded-full animate-spin mx-auto mb-4"></div>
+      <p className="text-white text-lg">Loading...</p>
+    </div>
   </div>
 );
 
-// Layout component that wraps each route with common elements
-const Layout = ({ children, isDarkMode, toggleDarkMode, particlesOptions, particlesInit }) => {
-  const location = useLocation();
-  const [activeSection, setActiveSection] = useState("home");
-
-  useEffect(() => {
-    // Extract the path without the leading slash to set active section
-    const path = location.pathname.substring(1) || "home";
-    setActiveSection(path);
-  }, [location]);
-
+// Layout component
+const Layout = ({ children }) => {
   return (
-    <div className={`${isDarkMode ? "dark" : ""}`}>
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
-        <Particles
-          id="tsparticles"
-          init={particlesInit}
-          options={particlesOptions}
-          className="fixed inset-0 -z-10"
-        />
-        <Navbar activeSection={activeSection} isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-        <main className="flex-grow">
+    <div className="dark">
+      <ThreeBackground />
+      <ScrollProgress />
+      <CommandPalette />
+      <ThemeToggle />
+      <CursorTrail />
+      <VisitorCounter />
+      <div className="min-h-screen flex flex-col bg-gradient-dark text-white relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-purple-900/10 to-cyan-900/10 pointer-events-none"></div>
+        <main className="flex-grow relative z-10 pb-32">
           <Suspense fallback={<LoadingFallback />}>
             {children}
           </Suspense>
         </main>
-        <Footer />
+        <ModernFooter />
+        <FloatingDock />
       </div>
     </div>
   );
 };
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Initialize using system preference
-  useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const particlesInit = async (main) => {
-    await loadFull(main);
-  };
-
-  // Enhanced vibrant particles configuration
-  const particlesOptions = {
-    fullScreen: { enable: false },
-    fpsLimit: 120,
-    particles: {
-      color: {
-        value: isDarkMode ? 
-          ["#ff3f81", "#58c8ed", "#f9c80e", "#7b4fff", "#2ecc71"] : 
-          ["#e94560", "#0652dd", "#f9a828", "#574b90", "#16a085"]
-      },
-      links: {
-        color: isDarkMode ? "#ffffff" : "#000000",
-        distance: 150,
-        enable: true,
-        opacity: 0.3,
-        width: 1
-      },
-      collisions: {
-        enable: true,
-      },
-      move: {
-        direction: "none",
-        enable: true,
-        outModes: {
-          default: "bounce"
-        },
-        random: true,
-        speed: 2,
-        straight: false,
-        attract: {
-          enable: true,
-          rotateX: 600,
-          rotateY: 1200
-        }
-      },
-      number: {
-        density: {
-          enable: true,
-          area: 800
-        },
-        value: 80
-      },
-      opacity: {
-        value: 0.7,
-        random: {
-          enable: true,
-          minimumValue: 0.1
-        },
-        animation: {
-          enable: true,
-          speed: 1,
-          minimumValue: 0.1,
-          sync: false
-        }
-      },
-      shape: {
-        type: ["circle", "triangle", "star", "polygon"],
-      },
-      size: {
-        value: { min: 1, max: 5 },
-        random: true,
-        animation: {
-          enable: true,
-          speed: 2,
-          minimumValue: 0.1,
-          sync: false
-        }
-      }
-    },
-    interactivity: {
-      events: {
-        onHover: {
-          enable: true,
-          mode: "repulse"
-        },
-        onClick: {
-          enable: true,
-          mode: "push"
-        },
-        resize: true
-      },
-      modes: {
-        repulse: {
-          distance: 100,
-          duration: 0.4
-        },
-        push: {
-          quantity: 4
-        }
-      }
-    },
-    detectRetina: true
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
-  // Memoized Layout props to prevent unnecessary re-renders
-  const layoutProps = {
-    isDarkMode,
-    toggleDarkMode,
-    particlesOptions,
-    particlesInit
-  };
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={
-          <Layout {...layoutProps}>
-            <Home />
-          </Layout>
-        } />
+        <Route path="/" element={<Layout><BentoHome /></Layout>} />
         <Route path="/home" element={<Navigate to="/" replace />} />
-        <Route path="/about" element={
-          <Layout {...layoutProps}>
-            <About />
-          </Layout>
-        } />
-        <Route path="/skills" element={
-          <Layout {...layoutProps}>
-            <Skills />
-          </Layout>
-        } />
-        <Route path="/projects" element={
-          <Layout {...layoutProps}>
-            <Projects />
-          </Layout>
-        } />
-        <Route path="/education" element={
-          <Layout {...layoutProps}>
-            <Education />
-          </Layout>
-        } />
-        <Route path="/contact" element={
-          <Layout {...layoutProps}>
-            <Contact />
-          </Layout>
-        } />
+        <Route path="/about" element={<Layout><TimelineAbout /></Layout>} />
+        <Route path="/skills" element={<Layout><InteractiveSkills /></Layout>} />
+        <Route path="/projects" element={<Layout><ModernProjects /></Layout>} />
+        <Route path="/education" element={<Layout><ModernEducation /></Layout>} />
+        <Route path="/contact" element={<Layout><ModernContact /></Layout>} />
+        <Route path="/blog" element={<Layout><Blog /></Layout>} />
+        <Route path="/admin/blog" element={<Layout><AdminBlog /></Layout>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

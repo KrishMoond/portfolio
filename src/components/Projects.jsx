@@ -42,10 +42,50 @@ export const Projects = () => {
   const projects = [
     {
       id: 1,
+      title: "🌾 AgriLink",
+      description:
+        "A comprehensive mobile-first web application connecting farmers directly with consumers, eliminating middlemen and ensuring fair pricing through secure transactions.",
+      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&h=400&fit=crop&crop=center",
+      tech: ["React 18", "Node.js", "MongoDB", "JWT Auth", "Tailwind CSS"],
+      link: "",
+      github: "https://github.com/KrishMoond/agrilink",
+      details: [
+        "Built direct farmer-to-consumer marketplace with real-time bidding system.",
+        "Implemented secure JWT authentication with role-based access control.",
+        "Developed dynamic auction system with automated notifications.",
+        "Integrated multiple payment methods including UPI, Bank Transfer, and Escrow.",
+        "Created responsive PWA with offline capabilities for rural users.",
+      ],
+      color: "from-green-600 to-emerald-400",
+      glowColor: "green",
+      icons: [<FaReact key="react" />, <FaDatabase key="db" />, <SiJavascript key="js" />],
+    },
+    {
+      id: 2,
+      title: "🌱 Sustainability Hub",
+      description:
+        "A comprehensive Django-based platform connecting sustainability enthusiasts through collaborative projects, events, forums, and resource sharing.",
+      image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&h=400&fit=crop&crop=center",
+      tech: ["Django 4.2", "Python", "SQLite", "Bootstrap", "JavaScript"],
+      link: "",
+      github: "https://github.com/KrishMoond/sustainability-hub",
+      details: [
+        "Developed full-stack platform with user profiles and authentication system.",
+        "Built collaborative project management with member tracking.",
+        "Implemented discussion forums with categories, posts, and moderation.",
+        "Created event management system with registration capabilities.",
+        "Added resource sharing platform with rating and review system.",
+      ],
+      color: "from-blue-600 to-green-400",
+      glowColor: "blue",
+      icons: [<FaCode key="django" />, <FaDatabase key="db" />, <FaLaptopCode key="web" />],
+    },
+    {
+      id: 3,
       title: "UNIGAMES",
       description:
         "A responsive eCommerce frontend built with React.js and Tailwind CSS, featuring dynamic product listings with search and filter functionality.",
-      image: "/src/assets/unigames.png",
+      image: "https://images.unsplash.com/photo-1556438064-2d7646166914?w=600&h=400&fit=crop&crop=center",
       tech: ["React.js", "Tailwind CSS", "Responsive Design"],
       link: "https://unigames-bice.vercel.app/",
       github: "https://github.com/KrishMoond/unigames",
@@ -60,14 +100,14 @@ export const Projects = () => {
       icons: [<FaReact key="react" />, <SiTailwindcss key="tailwind" />, <FaCode key="code" />],
     },
     {
-      id: 2,
+      id: 4,
       title: "Student Attendance System",
       description:
         "An interactive website for teachers to manage student attendance, featuring CRUD operations and cloud server storage on phpMyAdmin.",
-      image: "/src/assets/Attendance.png",
+      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&h=400&fit=crop&crop=center",
       tech: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
       github: "https://github.com/KrishMoond/php-attendance",
-      link: "", // Empty string if no live link available
+      link: "",
       details: [
         "Manage attendance using CRUD operations with cloud storage.",
         "Integrated real-time tracking with a database-driven backend.",
@@ -225,7 +265,7 @@ export const Projects = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid lg:grid-cols-2 gap-10">
           {projects.map((project, index) => (
             <div
               key={project.id}

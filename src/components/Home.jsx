@@ -1,312 +1,182 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaDownload } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaRocket } from "react-icons/fa";
 import { TypeAnimation } from "react-type-animation";
 import { motion } from "framer-motion";
+import { AttentionBackground } from "./AttentionBackground";
 
 export const Home = () => {
-  const bgCanvasRef = useRef(null);
-
-  // Space background with simple orbiting planets
-  useEffect(() => {
-    const canvas = bgCanvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext("2d");
-    
-    // Set canvas dimensions
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Create celestial objects
-    const celestialObjects = [];
-    
-    // Sun
-    celestialObjects.push({
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      radius: 30,
-      color: "#FDB813",
-      glowRadius: 100,
-      glowColor: "rgba(253, 184, 19, 0.2)",
-      isFixed: true
-    });
-    
-    // Planets
-    const planetColors = ["#8A9597", "#E7CDCD", "#6B93D6", "#C1440E", "#E29468", "#C7AA72"];
-    const orbitRadii = [120, 180, 250, 320, 400, 480];
-    
-    for (let i = 0; i < 6; i++) {
-      celestialObjects.push({
-        angle: Math.random() * Math.PI * 2,
-        orbitRadius: orbitRadii[i],
-        radius: 5 + i * 3,
-        speed: 0.002 / (i * 0.5 + 1),
-        color: planetColors[i],
-        orbit: {
-          x: window.innerWidth / 2,
-          y: window.innerHeight / 2,
-          visible: true
-        }
-      });
-    }
-    
-    // Stars
-    for (let i = 0; i < 120; i++) {
-      celestialObjects.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        radius: Math.random() * 1.5 + 0.5,
-        color: "rgba(255, 255, 255, 0.8)",
-        twinkle: {
-          speed: Math.random() * 0.03 + 0.01,
-          phase: Math.random() * Math.PI * 2
-        },
-        isStar: true
-      });
-    }
-    
-    // Animation loop
-    let animationId;
-    
-    const renderFrame = () => {
-      // Clear canvas
-      ctx.fillStyle = "#0f0f1e"; // Dark blue background
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw celestial objects
-      celestialObjects.forEach(obj => {
-        if (obj.isStar) {
-          // Animate star twinkle
-          obj.twinkle.phase += obj.twinkle.speed;
-          const opacity = 0.5 + Math.sin(obj.twinkle.phase) * 0.5;
-          
-          ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-          ctx.beginPath();
-          ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (obj.isFixed) {
-          // Draw sun with glow
-          ctx.beginPath();
-          const gradient = ctx.createRadialGradient(
-            obj.x, obj.y, 0,
-            obj.x, obj.y, obj.glowRadius
-          );
-          gradient.addColorStop(0, obj.color);
-          gradient.addColorStop(0.2, obj.color);
-          gradient.addColorStop(1, "rgba(253, 184, 19, 0)");
-          
-          ctx.fillStyle = gradient;
-          ctx.arc(obj.x, obj.y, obj.glowRadius, 0, Math.PI * 2);
-          ctx.fill();
-          
-          // Sun core
-          ctx.fillStyle = obj.color;
-          ctx.beginPath();
-          ctx.arc(obj.x, obj.y, obj.radius, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          // Update planet position
-          obj.angle += obj.speed;
-          const x = obj.orbit.x + Math.cos(obj.angle) * obj.orbitRadius;
-          const y = obj.orbit.y + Math.sin(obj.angle) * obj.orbitRadius;
-          
-          // Draw orbit
-          if (obj.orbit.visible) {
-            ctx.beginPath();
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
-            ctx.arc(obj.orbit.x, obj.orbit.y, obj.orbitRadius, 0, Math.PI * 2);
-            ctx.stroke();
-          }
-          
-          // Draw planet
-          ctx.fillStyle = obj.color;
-          ctx.beginPath();
-          ctx.arc(x, y, obj.radius, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      });
-      
-      animationId = requestAnimationFrame(renderFrame);
-    };
-    
-    // Start animation
-    renderFrame();
-    
-    // Cleanup
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', resizeCanvas);
-    };
-  }, []);
-
-  // Tilt effect for profile image
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const profileImg = document.getElementById("profile-img");
-      if (!profileImg) return;
-      const rect = profileImg.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const tiltX = (centerY - y) / 20;
-      const tiltY = (x - centerX) / 20;
-      profileImg.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.05)`;
-    };
-    
-    const handleMouseLeave = () => {
-      const profileImg = document.getElementById("profile-img");
-      if (profileImg) profileImg.style.transform = "";
-    };
-    
-    const imgContainer = document.getElementById("img-container");
-    if (imgContainer) {
-      imgContainer.addEventListener("mousemove", handleMouseMove);
-      imgContainer.addEventListener("mouseleave", handleMouseLeave);
-    }
-    
-    return () => {
-      if (imgContainer) {
-        imgContainer.removeEventListener("mousemove", handleMouseMove);
-        imgContainer.removeEventListener("mouseleave", handleMouseLeave);
-      }
-    };
-  }, []);
-
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
-  const buttonVariants = {
-    hover: {
-      scale: 1.05,
-      boxShadow: "0px 8px 20px rgba(99, 102, 241, 0.4)",
-      transition: { duration: 0.3 },
-    },
-    tap: { scale: 0.95 },
-  };
 
-  const gradientText = "bg-gradient-to-r from-pink-500 via-indigo-500 to-blue-500 text-transparent bg-clip-text";
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Space Background Canvas - positioned absolutely and covers full screen */}
-      <canvas 
-        ref={bgCanvasRef} 
-        className="absolute top-0 left-0 w-full h-full" 
-        style={{ zIndex: 0 }}
-      />
+      <AttentionBackground />
       
-      <div className="relative z-10 container mx-auto px-4 py-20">
+
+      <div className="relative z-10 container mx-auto px-6 py-20">
         <motion.div
-          className="flex flex-col md:flex-row items-center justify-between"
+          className="flex flex-col lg:flex-row items-center justify-between gap-12"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
         >
-          <motion.div className="md:w-1/2 mb-12 md:mb-0 flex justify-center" variants={itemVariants}>
-            <div id="img-container" className="relative group transition-transform duration-300">
-              <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur-2xl opacity-60 group-hover:opacity-100"></div>
+          {/* Profile Image with Enhanced Effects */}
+          <motion.div 
+            className="lg:w-1/2 flex justify-center" 
+            variants={itemVariants}
+          >
+            <div className="relative group">
+              {/* Single elegant glow */}
+              <div className="absolute -inset-4 bg-gradient-primary rounded-full blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+              
               <img
-                id="profile-img"
-                src="/src/assets/bimoji.png"
+                src="/bimoji.png"
                 alt="Krish Moond"
-                className="relative z-10 rounded-full w-64 h-64 object-cover shadow-2xl"
+                className="relative z-10 rounded-full w-80 h-80 object-cover shadow-2xl border-4 border-white/20 neon-border group-hover:animate-glitch"
               />
+              
+
             </div>
           </motion.div>
 
-          <motion.div className="md:w-1/2 text-center md:text-left" variants={itemVariants}>
-            <motion.h1 className="text-5xl font-extrabold mb-4 text-white" variants={itemVariants}>
-              Hi, I'm <span className={gradientText}>Krish Moond</span>
+          {/* Enhanced Content */}
+          <motion.div 
+            className="lg:w-1/2 text-center lg:text-left space-y-8" 
+            variants={itemVariants}
+          >
+            {/* Clean badge */}
+            <motion.div
+              className="inline-flex items-center gap-2 glass-button rounded-full px-4 py-2"
+              variants={itemVariants}
+            >
+              <FaRocket className="text-indigo-400" />
+              <span className="text-gray-300 font-medium">Open to Opportunities</span>
+            </motion.div>
+
+            <motion.h1 
+              className="text-6xl lg:text-7xl font-black leading-tight" 
+              variants={itemVariants}
+            >
+              <span className="text-white">Hi, I'm </span>
+              <span className="text-gradient">
+                Krish Moond
+              </span>
             </motion.h1>
 
-            <motion.h2 className="text-2xl text-indigo-200 mb-6" variants={itemVariants}>
+            <motion.div 
+              className="text-3xl lg:text-4xl font-bold" 
+              variants={itemVariants}
+            >
               <TypeAnimation
                 sequence={[
-                  "Computer Science Student",
-                  1000,
-                  "Frontend Developer",
-                  1000,
-                  "UI/UX Enthusiast",
-                  1000,
-                  "Problem Solver",
-                  1000,
+                  "🚀 Frontend Developer",
+                  2000,
+                  "🎨 UI/UX Designer", 
+                  2000,
+                  "💡 Problem Solver",
+                  2000,
+                  "⚡ Performance Expert",
+                  2000,
                 ]}
                 speed={50}
                 repeat={Infinity}
+                className="text-gradient"
               />
-            </motion.h2>
+            </motion.div>
 
             <motion.p
-  className="text-xl font-medium mb-8 leading-relaxed bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-300 bg-clip-text text-transparent"
-  variants={itemVariants}
->
-  Crafting delightful digital experiences with a blend of creative design and modern code.
-</motion.p>
+              className="text-xl text-gray-300 leading-relaxed max-w-2xl"
+              variants={itemVariants}
+            >
+              🌟 Transforming ideas into <span className="text-indigo-400 font-semibold">stunning digital experiences</span> with 
+              cutting-edge technologies and <span className="text-purple-400 font-semibold">creative innovation</span>.
+            </motion.p>
 
-
-{/* <motion.p
-  className="text-3xl font-semibold bg-gradient-to-r from-blue-500 via-cyan-300 to-lime-300 bg-clip-text text-transparent mb-8 leading-relaxed"
-  variants={itemVariants}
->
-  Crafting delightful digital experiences with a blend of creative design and modern code.
-</motion.p> */}
-
-
-            <motion.div className="flex flex-wrap gap-4 justify-center md:justify-start" variants={itemVariants}>
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
-                <Link to="/contact" className="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md flex items-center gap-2">
-                  <span>Contact Me</span>
-                  <FaEnvelope />
+            {/* Enhanced Action Buttons */}
+            <motion.div 
+              className="flex flex-wrap gap-4 justify-center lg:justify-start pt-6" 
+              variants={itemVariants}
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link 
+                  to="/contact" 
+                  className="px-8 py-4 bg-gradient-primary text-white rounded-xl font-bold text-lg glass-button transition-all duration-300 flex items-center gap-3"
+                >
+                  💬 Let's Talk <FaEnvelope />
                 </Link>
               </motion.div>
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
-                <Link to="/projects" className="px-6 py-3 border-2 border-indigo-400 text-indigo-200 rounded-lg flex items-center gap-2">
-                  <span>View Projects</span>
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link 
+                  to="/projects" 
+                  className="px-8 py-4 glass border-2 border-indigo-400 text-indigo-300 rounded-xl font-bold text-lg hover:glass-button hover:text-white transition-all duration-300"
+                >
+                  🚀 View Projects
                 </Link>
               </motion.div>
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" className="hidden md:block">
-                <a href="/resume.pdf" download className="px-6 py-3 bg-pink-600 text-white rounded-lg flex items-center gap-2">
-                  <span>Download CV</span>
-                  <FaDownload />
+              
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <a 
+                  href="/resume.pdf" 
+                  download 
+                  className="px-8 py-4 bg-gradient-secondary text-white rounded-xl font-bold text-lg glass-button transition-all duration-300 flex items-center gap-3"
+                >
+                  📄 Download CV <FaDownload />
                 </a>
               </motion.div>
             </motion.div>
 
-            <motion.div className="flex mt-10 space-x-6 justify-center md:justify-start" variants={itemVariants}>
-              <motion.a href="https://github.com/KrishMoond" target="_blank" className="text-white hover:text-indigo-400" whileHover={{ scale: 1.2 }}>
-                <FaGithub size={26} />
-              </motion.a>
-              <motion.a href="https://linkedin.com/in/krish-moond" target="_blank" className="text-white hover:text-blue-400" whileHover={{ scale: 1.2 }}>
-                <FaLinkedin size={26} />
-              </motion.a>
-              <motion.a href="mailto:moondkrish921@gmail.com" className="text-white hover:text-red-400" whileHover={{ scale: 1.2 }}>
-                <FaEnvelope size={26} />
-              </motion.a>
-              <motion.a href="tel:8708304851" className="text-white hover:text-green-400" whileHover={{ scale: 1.2 }}>
-                <FaPhone size={26} />
-              </motion.a>
+            {/* Enhanced Social Links */}
+            <motion.div 
+              className="flex gap-8 justify-center lg:justify-start pt-8" 
+              variants={itemVariants}
+            >
+              {[
+                { href: "https://github.com/KrishMoond", icon: FaGithub, color: "hover:text-gray-300", glow: "hover:shadow-gray-400" },
+                { href: "https://linkedin.com/in/krish-moond", icon: FaLinkedin, color: "hover:text-blue-400", glow: "hover:shadow-blue-400" },
+                { href: "mailto:moondkrish921@gmail.com", icon: FaEnvelope, color: "hover:text-red-400", glow: "hover:shadow-red-400" },
+
+              ].map(({ href, icon: Icon, color, glow }, index) => (
+                <motion.a
+                  key={index}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  className={`text-white ${color} text-3xl hover:scale-125 transition-all duration-300 p-3 rounded-full border border-white/20 ${glow}`}
+                  whileHover={{ 
+                    rotate: [0, -10, 10, 0],
+                    boxShadow: "0 0 20px currentColor"
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Icon />
+                </motion.a>
+              ))}
             </motion.div>
           </motion.div>
         </motion.div>
