@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaSave } from "react-icons/fa";
+import { FaSave, FaImage, FaTrash } from "react-icons/fa";
 
 const API_URL = 'http://localhost:5000/api';
 
@@ -10,9 +10,37 @@ export const AdminBlog = () => {
     excerpt: "",
     content: "",
     tags: "",
-    readTime: ""
+    readTime: "",
+    image: ""
   });
   const [status, setStatus] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      setFormData(prev => ({ ...prev, image: data.url }));
+      setStatus("Image uploaded!");
+      setTimeout(() => setStatus(""), 2000);
+    } catch (error) {
+      setStatus("Error uploading image");
+      console.error(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +61,9 @@ export const AdminBlog = () => {
       });
 
       setStatus("Published successfully!");
-      setFormData({ title: "", excerpt: "", content: "", tags: "", readTime: "" });
+      setFormData({ title: "", excerpt: "", content: "", tags: "", readTime: "", image: "" });
+      setImagePreview("");
+      setImageFile(null);
       setTimeout(() => setStatus(""), 3000);
     } catch (error) {
       setStatus("Error publishing post");
@@ -83,6 +113,41 @@ export const AdminBlog = () => {
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:border-blue-500 focus:outline-none"
               placeholder="Brief description"
             />
+          </div>
+
+          <div>
+            <label className="block text-gray-300 mb-2">Featured Image</label>
+            <div className="flex gap-4 items-start">
+              <label className="flex-1 cursor-pointer">
+                <div className="w-full px-4 py-8 bg-white/5 border-2 border-dashed border-white/10 rounded-xl hover:border-blue-500 transition-colors flex flex-col items-center justify-center gap-2">
+                  <FaImage className="text-4xl text-gray-400" />
+                  <span className="text-gray-400">Click to upload image</span>
+                  <span className="text-gray-500 text-sm">PNG, JPG up to 5MB</span>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+              {imagePreview && (
+                <div className="relative w-48 h-32">
+                  <img src={imagePreview} alt="Preview" className="w-full h-full object-cover rounded-xl" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview("");
+                      setImageFile(null);
+                      setFormData(prev => ({ ...prev, image: "" }));
+                    }}
+                    className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                  >
+                    <FaTrash className="text-sm" />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           <div>

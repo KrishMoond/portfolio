@@ -32,10 +32,21 @@ const PostSchema = new mongoose.Schema({
   tags: [String],
   image: { type: String },
   likes: { type: Number, default: 0 },
+  reactions: {
+    like: { type: Number, default: 0 },
+    love: { type: Number, default: 0 },
+    fire: { type: Number, default: 0 },
+    insightful: { type: Number, default: 0 },
+    celebrate: { type: Number, default: 0 }
+  },
+  views: { type: Number, default: 0 },
   comments: [{
+    id: String,
     text: String,
     author: String,
-    date: String
+    date: String,
+    parentId: String,
+    likes: { type: Number, default: 0 }
   }],
   createdAt: { type: Date, default: Date.now }
 });
@@ -74,11 +85,54 @@ app.patch('/api/posts/:id/like', async (req, res) => {
   }
 });
 
-app.post('/api/posts/:id/comment', async (req, res) => {
+app.patch('/api/posts/:id/react', async (req, res) => {
+  try {
+    const { reaction } = req.body;
+    const update = {};
+    update[`reactions.${reaction}`] = 1;
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $inc: update },
+      { new: true }
+    );
+    res.json(post);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.patch('/api/posts/:id/view', async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate(
       req.params.id,
-      { $push: { comments: req.body } },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
+    res.json(post);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.post('/api/posts/:id/comment', async (req, res) => {
+  try {
+    const comment = { ...req.body, id: new mongoose.Types.ObjectId().toString() };
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $push: { comments: comment } },
+      { new: true }
+    );
+    res.json(post);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.put('/api/posts/:id', async (req, res) => {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      req.body,
       { new: true }
     );
     res.json(post);

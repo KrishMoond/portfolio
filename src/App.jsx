@@ -214,6 +214,7 @@ const ModernContact = lazy(() => import("./components/ModernContact"));
 const Blog = lazy(() => import("./components/Blog"));
 const AdminBlog = lazy(() => import("./components/AdminBlog"));
 
+
 // Improved loading component
 const LoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -236,7 +237,7 @@ const Layout = ({ children }) => {
       <VisitorCounter />
       <div className="min-h-screen flex flex-col bg-gradient-dark text-white relative">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-purple-900/10 to-cyan-900/10 pointer-events-none"></div>
-        <main className="flex-grow relative z-10 pb-32">
+        <main className="flex-grow relative z-10 pb-24">
           <Suspense fallback={<LoadingFallback />}>
             {children}
           </Suspense>

@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaBriefcase, FaGraduationCap, FaCode, FaRocket } from "react-icons/fa";
+import WorkProcess from "./WorkProcess";
 
 export const TimelineAbout = () => {
   const timeline = [
@@ -51,8 +52,8 @@ export const TimelineAbout = () => {
             About <span className="text-gradient">Me</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-            Passionate developer with a love for creating elegant solutions to complex problems. 
-            Constantly learning and evolving with the ever-changing tech landscape.
+            A passionate Computer Science student who loves turning complex problems into elegant solutions. 
+            Driven by curiosity and a commitment to continuous learning.
           </p>
         </motion.div>
 
@@ -71,10 +72,15 @@ export const TimelineAbout = () => {
             />
           </div>
           <div className="flex-1">
-            <h2 className="text-3xl font-bold text-white mb-4">Krish Moond</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">My Story</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
-              I'm a Computer Science and Engineering student at LPU with a passion for building responsive and user-friendly web applications. 
-              I love diving into programming fundamentals, data structures, and real-world web tech. Always hungry to learn and take on challenges.
+              I'm a Computer Science and Engineering student at Lovely Professional University with a CGPA of 7.97. My journey into tech started with curiosity about how websites work, which evolved into a passion for creating seamless digital experiences.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              I specialize in frontend development with React and have experience building full-stack applications using the MERN stack and Django. What drives me is the challenge of solving real-world problems through code and the satisfaction of seeing users interact with what I've built.
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-4">
+              Beyond coding, I'm constantly learning through online courses, building projects, and staying updated with the latest web technologies. I believe in writing clean, maintainable code and creating applications that are both functional and beautiful.
             </p>
             <div className="flex flex-wrap gap-3">
               {["Problem Solver", "Team Player", "Quick Learner", "Adaptability"].map((trait) => (
@@ -150,6 +156,9 @@ export const TimelineAbout = () => {
             </div>
           ))}
         </motion.div>
+
+        {/* Work Process */}
+        <WorkProcess />
       </div>
     </section>
   );

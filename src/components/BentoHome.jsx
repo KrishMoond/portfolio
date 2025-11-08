@@ -78,10 +78,10 @@ export const BentoHome = () => {
   };
 
   return (
-    <section className="min-h-screen py-20 px-6">
+    <section className="min-h-screen py-20 px-6 pb-32">
       <div className="max-w-7xl mx-auto">
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px] mb-8">
           
           {/* Profile Card - Large */}
           <TiltCard className="md:col-span-2 md:row-span-2 glass-card rounded-3xl p-8 flex flex-col justify-between overflow-hidden relative group">
@@ -103,7 +103,7 @@ export const BentoHome = () => {
                 </div>
               </div>
               <p className="text-gray-300 text-base leading-relaxed mb-6">
-                Transforming ideas into stunning digital experiences with cutting-edge technologies and creative innovation.
+                I build responsive, user-friendly web applications with modern technologies. Passionate about clean code and exceptional user experiences.
               </p>
               <div className="flex gap-3">
                 <MagneticButton
@@ -153,8 +153,8 @@ export const BentoHome = () => {
           >
             <FaClock className="text-4xl text-amber-400 mb-4" />
             <div>
-              <p className="text-5xl font-bold text-white mb-2">2+</p>
-              <p className="text-gray-400">Years Experience</p>
+              <p className="text-5xl font-bold text-white mb-2">10+</p>
+              <p className="text-gray-400">Technologies</p>
             </div>
           </motion.div>
 
@@ -210,18 +210,15 @@ export const BentoHome = () => {
           {/* Availability Status */}
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="md:col-span-2 glass-card rounded-3xl p-6 flex items-center justify-between bg-gradient-to-r from-green-500/10 to-emerald-500/10"
+            className="glass-card rounded-3xl p-4 flex items-center justify-between bg-gradient-to-r from-green-500/10 to-emerald-500/10"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <div>
-                <p className="text-white font-semibold text-lg">Available for Work</p>
-                <p className="text-gray-400 text-sm">Open to new opportunities</p>
-              </div>
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <p className="text-white font-semibold text-sm">Available for Work</p>
             </div>
             <MagneticButton
               to="/contact"
-              className="px-6 py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 transition-all duration-300"
+              className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-all duration-300"
             >
               Let's Talk
             </MagneticButton>

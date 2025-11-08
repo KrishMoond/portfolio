@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaHome, FaUser, FaCode, FaBriefcase, FaGraduationCap, FaEnvelope, FaPenNib } from "react-icons/fa";
+import { FaHome, FaUser, FaCode, FaBriefcase, FaGraduationCap, FaEnvelope } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 export const FloatingDock = () => {
@@ -13,37 +13,32 @@ export const FloatingDock = () => {
     { path: "/skills", icon: FaCode, label: "Skills" },
     { path: "/projects", icon: FaBriefcase, label: "Projects" },
     { path: "/education", icon: FaGraduationCap, label: "Education" },
-    { path: "/blog", icon: FaPenNib, label: "Blog" },
     { path: "/contact", icon: FaEnvelope, label: "Contact" },
   ];
 
   return (
     <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
+      initial={{ x: 100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      className="fixed top-8 right-8 z-40"
     >
-      <div className="glass-card rounded-2xl px-4 py-3 flex items-end gap-2">
+      <div className="glass-card rounded-2xl px-3 py-4 flex flex-col items-center gap-2">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
-          const distance = hoveredIndex !== null ? Math.abs(index - hoveredIndex) : 3;
-          const scale = hoveredIndex !== null ? Math.max(1, 1.5 - distance * 0.2) : 1;
 
           return (
             <Link
               key={item.path}
               to={item.path}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
               className="relative group"
             >
               <motion.div
-                animate={{ scale }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 className={`w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                    ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/50"
                     : "text-gray-400 hover:text-white hover:bg-white/10"
                 }`}
               >
@@ -51,7 +46,7 @@ export const FloatingDock = () => {
               </motion.div>
               
               {/* Tooltip */}
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+              <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 px-3 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 {item.label}
               </div>
             </Link>

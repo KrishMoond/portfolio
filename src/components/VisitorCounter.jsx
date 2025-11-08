@@ -33,7 +33,7 @@ export const VisitorCounter = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-6 right-6 glass-card rounded-xl p-4 z-40 hidden md:block"
+      className="fixed bottom-28 right-6 glass-card rounded-xl p-4 z-40 hidden md:block"
     >
       <div className="space-y-2 text-sm">
         <div className="flex items-center gap-2 text-gray-300">

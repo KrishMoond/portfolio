@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaCalendar, FaClock, FaComment, FaHeart, FaSearch } from "react-icons/fa";
+import { FaCalendar, FaClock, FaComment, FaHeart, FaSearch, FaTrash } from "react-icons/fa";
 
 const API_URL = 'http://localhost:5000/api';
 
@@ -20,20 +20,7 @@ export const Blog = () => {
       const data = await response.json();
       setPosts(data.map(post => ({ ...post, id: post._id })));
     } catch (error) {
-      setPosts([
-        {
-          id: 1,
-          title: "Getting Started with React",
-          excerpt: "Learn the fundamentals of React and build your first component.",
-          content: "React is a powerful JavaScript library for building user interfaces...",
-          author: "Krish Moond",
-          date: "2024-01-15",
-          readTime: "5 min",
-          likes: 24,
-          comments: [],
-          tags: ["React", "JavaScript", "Web Development"]
-        }
-      ]);
+      setPosts([]);
     } finally {
       setLoading(false);
     }
@@ -48,6 +35,20 @@ export const Blog = () => {
       setPosts(posts.map(p => p.id === postId ? {...updatedPost, id: updatedPost._id} : p));
     } catch (error) {
       console.error("Error liking post:", error);
+    }
+  };
+
+  const handleDelete = async (postId) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    
+    try {
+      await fetch(`${API_URL}/posts/${postId}`, {
+        method: 'DELETE'
+      });
+      setPosts(posts.filter(p => p.id !== postId));
+      setSelectedPost(null);
+    } catch (error) {
+      console.error("Error deleting post:", error);
     }
   };
 
@@ -113,6 +114,10 @@ export const Blog = () => {
               </div>
             ))}
           </div>
+        ) : filteredPosts.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-gray-400 text-lg">No blog posts yet. Check back soon!</p>
+          </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {filteredPosts.map((post, i) => (
@@ -122,41 +127,46 @@ export const Blog = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => setSelectedPost(post)}
-                className="glass-card rounded-2xl p-6 cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 transition-all"
+                className="glass-card rounded-2xl overflow-hidden cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 transition-all group"
               >
-                <h3 className="text-2xl font-bold text-white mb-3">{post.title}</h3>
-                <p className="text-gray-400 mb-4">{post.excerpt}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {post.tags?.map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-lg text-sm">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1">
-                      <FaCalendar /> {post.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaClock /> {post.readTime}
-                    </span>
+                {post.image && (
+                  <img src={post.image} alt={post.title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform" />
+                )}
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold text-white mb-3">{post.title}</h3>
+                  <p className="text-gray-400 mb-4">{post.excerpt}</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags?.map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-lg text-sm">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLike(post.id);
-                      }}
-                      className="flex items-center gap-1 hover:text-red-400 transition-colors"
-                    >
-                      <FaHeart /> {post.likes || 0}
-                    </button>
-                    <span className="flex items-center gap-1">
-                      <FaComment /> {post.comments?.length || 0}
-                    </span>
+
+                  <div className="flex items-center justify-between text-sm text-gray-400">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1">
+                        <FaCalendar /> {post.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <FaClock /> {post.readTime}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLike(post.id);
+                        }}
+                        className="flex items-center gap-1 hover:text-red-400 transition-colors"
+                      >
+                        <FaHeart /> {post.likes || 0}
+                      </button>
+                      <span className="flex items-center gap-1">
+                        <FaComment /> {post.comments?.length || 0}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -169,6 +179,7 @@ export const Blog = () => {
             post={selectedPost}
             onClose={() => setSelectedPost(null)}
             onComment={handleComment}
+            onDelete={handleDelete}
           />
         )}
       </div>
@@ -176,7 +187,7 @@ export const Blog = () => {
   );
 };
 
-const BlogPostModal = ({ post, onClose, onComment }) => {
+const BlogPostModal = ({ post, onClose, onComment, onDelete }) => {
   const [comment, setComment] = useState("");
 
   const handleSubmit = (e) => {
@@ -201,12 +212,24 @@ const BlogPostModal = ({ post, onClose, onComment }) => {
         onClick={(e) => e.stopPropagation()}
         className="glass-card rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8"
       >
-        <button
-          onClick={onClose}
-          className="float-right text-gray-400 hover:text-white text-2xl"
-        >
-          ×
-        </button>
+        <div className="flex justify-between items-start mb-4">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white text-2xl"
+          >
+            ×
+          </button>
+          <button
+            onClick={() => onDelete(post.id)}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-colors"
+          >
+            <FaTrash /> Delete
+          </button>
+        </div>
+
+        {post.image && (
+          <img src={post.image} alt={post.title} className="w-full h-64 object-cover rounded-2xl mb-6" />
+        )}
 
         <h1 className="text-4xl font-bold text-white mb-4">{post.title}</h1>
         
