@@ -6,10 +6,11 @@ A modern, responsive portfolio website built with React, showcasing my projects,
 
 - **Modern Design**: Glassmorphism UI with smooth animations and transitions
 - **Fully Responsive**: Optimized for all devices (mobile, tablet, desktop)
-- **Interactive Components**: 3D tilt effects, magnetic buttons, and hover animations
-- **Blog System**: MongoDB-powered blog with likes, comments, and search
+- **Interactive 3D Elements**: Three.js powered background and hero object with mouse interaction
+- **3D Tilt Effects**: Magnetic buttons and hover animations
 - **Command Palette**: Quick navigation with Cmd/Ctrl+K
 - **GitHub Integration**: Live GitHub stats and activity
+- **Floating Navigation**: Top-right vertical dock with smooth animations
 - **Performance Optimized**: Lazy loading, code splitting, and optimized assets
 - **Accessible**: WCAG compliant with keyboard navigation and screen reader support
 
@@ -24,21 +25,13 @@ A modern, responsive portfolio website built with React, showcasing my projects,
 - **React Icons** - Icon library
 - **Three.js** - 3D background effects
 
-### Backend (Blog)
-- **Node.js** - Runtime environment
-- **Express** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM for MongoDB
-- **Multer** - File upload handling
+
 
 ## 📦 Installation
 
 ### Prerequisites
 - Node.js (v16 or higher)
 - npm or yarn
-- MongoDB (for blog functionality)
-
-### Frontend Setup
 
 ```bash
 # Clone the repository
@@ -58,35 +51,12 @@ npm run build
 npm run preview
 ```
 
-### Backend Setup (Blog)
-
-```bash
-# Navigate to server directory
-cd server
-
-# Install dependencies
-npm install
-
-# Create .env file
-echo "MONGODB_URI=mongodb://localhost:27017/portfolio-blog" > .env
-echo "PORT=5000" >> .env
-
-# Start server
-npm run dev
-```
-
 ## 🚀 Deployment
 
-### Frontend (Vercel/Netlify)
+### Vercel/Netlify
 1. Connect your GitHub repository
 2. Set build command: `npm run build`
 3. Set output directory: `dist`
-4. Deploy!
-
-### Backend (Railway/Render)
-1. Connect your GitHub repository
-2. Set start command: `npm start`
-3. Add environment variables (MONGODB_URI)
 4. Deploy!
 
 ## 📁 Project Structure
@@ -94,28 +64,33 @@ npm run dev
 ```
 portfolio/
 ├── public/              # Static assets
+│   └── bimoji.png      # Profile image
 ├── src/
 │   ├── components/      # React components
+│   │   ├── BentoHome.jsx          # Bento grid homepage
+│   │   ├── ThreeBackground.jsx    # 3D particle background
+│   │   ├── ThreeHero.jsx          # 3D hero object
+│   │   ├── FloatingDock.jsx       # Navigation dock
+│   │   ├── CommandPalette.jsx     # Quick navigation
+│   │   └── ...                    # Other components
 │   ├── App.jsx         # Main app component
 │   ├── main.jsx        # Entry point
 │   └── index.css       # Global styles
-├── server/             # Backend API
-│   ├── index.js        # Express server
-│   ├── package.json    # Backend dependencies
-│   └── uploads/        # Uploaded images
-└── package.json        # Frontend dependencies
+└── package.json        # Dependencies
 ```
 
 ## 🎨 Key Components
 
-- **BentoHome**: Modern bento grid homepage with magnetic buttons
+- **BentoHome**: Modern bento grid homepage with magnetic buttons and 3D hero object
+- **ThreeBackground**: Interactive particle background with mouse tracking
+- **ThreeHero**: 3D rotating geometric shape with mouse interaction
 - **TimelineAbout**: Timeline-based about section with story
 - **ModernProjects**: Masonry grid project showcase with filters
 - **InteractiveSkills**: Categorized skills with certifications
 - **ModernEducation**: Education timeline with achievements
-- **Blog**: Full-featured blog with MongoDB backend
 - **CommandPalette**: Quick navigation (Cmd/Ctrl+K)
-- **FloatingDock**: macOS-style navigation dock
+- **FloatingDock**: Vertical navigation dock (top-right)
+- **WorkingContactForm**: Formspree-powered contact form
 
 ## 🌟 Features in Detail
 
