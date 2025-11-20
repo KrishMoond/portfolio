@@ -79,7 +79,7 @@ export const BentoHome = () => {
   };
 
   return (
-    <section className="min-h-screen py-20 px-6 pb-32">
+    <section className="min-h-screen py-20 px-6 pb-32" id="main-content" role="main">
       <div className="max-w-7xl mx-auto">
         {/* Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px] mb-8">
@@ -93,7 +93,8 @@ export const BentoHome = () => {
                   <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-md opacity-50"></div>
                   <img
                     src="/bimoji.png"
-                    alt="Krish Moond"
+                    alt="Krish Moond - Frontend Developer"
+                    loading="eager"
                     className="relative w-24 h-24 rounded-full object-cover border-2 border-white/20"
                   />
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-900"></div>
@@ -104,7 +105,7 @@ export const BentoHome = () => {
                 </div>
               </div>
               <p className="text-gray-300 text-base leading-relaxed mb-6">
-                I build responsive, user-friendly web applications with modern technologies. Passionate about clean code and exceptional user experiences.
+                Crafting exceptional web experiences with React, Three.js, and modern technologies. Specializing in interactive 3D interfaces and performance-optimized applications.
               </p>
               <div className="flex gap-3">
                 <MagneticButton
@@ -201,17 +202,19 @@ export const BentoHome = () => {
             <h3 className="text-lg font-bold text-white mb-4">Connect</h3>
             <div className="flex gap-4">
               {[
-                { href: "https://github.com/KrishMoond", icon: FaGithub },
-                { href: "https://linkedin.com/in/krish-moond", icon: FaLinkedin },
-                { href: "mailto:moondkrish921@gmail.com", icon: FaEnvelope },
-              ].map(({ href, icon: Icon }) => (
+                { href: "https://github.com/KrishMoond", icon: FaGithub, label: "GitHub" },
+                { href: "https://linkedin.com/in/krish-moond", icon: FaLinkedin, label: "LinkedIn" },
+                { href: "mailto:moondkrish921@gmail.com", icon: FaEnvelope, label: "Email" },
+              ].map(({ href, icon: Icon, label }) => (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
                   className="text-gray-400 hover:text-white text-2xl hover:scale-125 transition-all duration-300"
                 >
-                  <Icon />
+                  <Icon aria-hidden="true" />
                 </a>
               ))}
             </div>
