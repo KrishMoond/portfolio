@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaCode, FaRocket, FaClock } from "react-icons/fa";
 import { motion } from "framer-motion";
 import GitHubStats from "./GitHubStats";
+import ThreeHero from "./ThreeHero";
 
 export const BentoHome = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -121,6 +122,15 @@ export const BentoHome = () => {
               </div>
             </div>
           </TiltCard>
+
+          {/* 3D Interactive Object */}
+          <motion.div
+            className="md:row-span-2 glass-card rounded-3xl p-6 flex items-center justify-center overflow-hidden relative group"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5"></div>
+            <ThreeHero />
+          </motion.div>
 
           {/* GitHub Stats */}
           <motion.div

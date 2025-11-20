@@ -200,7 +200,6 @@ import { FloatingDock } from "./components/FloatingDock";
 import { ScrollProgress } from "./components/ScrollProgress";
 import { CommandPalette } from "./components/CommandPalette";
 import { ModernFooter } from "./components/ModernFooter";
-import { ThemeToggle } from "./components/ThemeToggle";
 import { CursorTrail } from "./components/CursorTrail";
 import { VisitorCounter } from "./components/VisitorCounter";
 
@@ -232,7 +231,6 @@ const Layout = ({ children }) => {
       <ThreeBackground />
       <ScrollProgress />
       <CommandPalette />
-      <ThemeToggle />
       <CursorTrail />
       <VisitorCounter />
       <div className="min-h-screen flex flex-col bg-gradient-dark text-white relative">
